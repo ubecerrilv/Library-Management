@@ -40,8 +40,8 @@ public:
     void deleteBookById(int id);
     void setBookAsBorrowedAvailable(int id);
     // User management
-    void addUser(const User &user);
-    std::vector<User*> getUsers();
+    void addUser(User &user);
+    std::vector<const User*> getUsers()const;
     void deleteUserById(int id);
     //Loan management
     void createLoan(int userId, int bookId);

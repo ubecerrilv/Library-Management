@@ -14,7 +14,9 @@ private:
     std::string theEmail;
 
 public:
-    User (int id, std::string name, std::string email);
+    User();
+    User(int id, std::string name, std::string email);
+    User (std::string name, std::string email);
 
     void setId (int id);
     void setName (const std::string &name);

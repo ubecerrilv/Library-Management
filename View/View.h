@@ -8,8 +8,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
-#include "Book.h"
 #include <iomanip>
+
+#include "Book.h"
+#include "User.h"
 
 class View {
 public:
@@ -29,6 +31,10 @@ public:
     std::string getBookAuthor();
     int getBookId();
     void showBook(const Book& book);
+
+    User getUser();
+    void showUsers(const std::vector<const User*>& users);
+    int getUserId();
 };
 
 #endif //LIBRARY_VIEW_H

@@ -119,3 +119,42 @@ void View::showBook(const Book &book) {
         std::cout << "The book found, ID: " << book.getId() << "; " << book.getName() << " by " << book.getAuthor()<< std::endl;
     }
 }
+
+User View::getUser() {
+    std::cout << "Type the name of the new user:" << std::endl;
+    std::string name{};
+    std::getline(std::cin, name);
+    std::cout << "Type the email of the new user:" << std::endl;
+    std::string email{};
+    std::getline(std::cin, email);
+    return {name, email};
+}
+void View::showUsers(const std::vector<const User *> &users) {
+    if (users.empty()) {
+        std::cout << "No users found" << std::endl;
+        return;
+    }
+    constexpr int idWidth = 5;
+    constexpr int nameWidth = 35;
+    constexpr int emailWidth = 35;
+
+    std::cout << std::left
+        << std::setw(idWidth)         << "ID"         << " | "
+        << std::setw(nameWidth)   << "Name"       << " | "
+        << std::setw(emailWidth) << "Email"     << std::endl;
+
+    std::cout << std::string(idWidth + nameWidth + emailWidth  + 9, '-') << std::endl;
+
+    for (const auto& user : users) {
+        std::cout << std::left
+            << std::setw(idWidth)     << user->getId()     << " | "
+            << std::setw(nameWidth)   << (user->getName().substr(0, nameWidth - 1))   << " | "
+            << std::setw(emailWidth) << (user->getEmail().substr(0, emailWidth - 1))<< std::endl;
+    }
+}
+int View::getUserId() {
+    std::cout << "Type the ID of the user:" << std::endl;
+    std::string id{};
+    std::getline(std::cin, id);
+    return std::stoi(id);
+}

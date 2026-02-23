@@ -24,6 +24,7 @@ void Controller::MainMenu(){
 				break;
 			case 2:
 				usersMenu();
+				break;
 			case 3:
 				booksLoanMenu();
 			default:
@@ -85,18 +86,26 @@ void Controller::booksMenu() {
 void Controller::usersMenu() {
 	int o{0};
 
+	// TODO: Show confirmation messages
 	while (o != 4) {
 		theView.showUsersMenu();
 		o = theView.getOption();
 
 		switch (o) {
 			case 1: {
+				User u = theView.getUser();
+				theLibrary.addUser(u);
+				theLibrary.saveUsers();
 				break;
 			}
 			case 2: {
+				theView.showUsers(theLibrary.getUsers());
 				break;
 			}
 			case 3: {
+				const int id = theView.getUserId();
+				theLibrary.deleteUserById(id);
+				theLibrary.saveUsers();
 				break;
 			}
 			default: {

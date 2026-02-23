@@ -4,8 +4,11 @@
 
 #include "User.h"
 
-User::User (const int id, std::string name, std::string email):
+User::User() =default;
+User::User(const int id, std::string name, std::string email):
     theId{id}, theName{std::move(name)}, theEmail{std::move(email)}{}
+User::User (std::string name, std::string email):
+    theName{std::move(name)}, theEmail{std::move(email)}{}
 
 void User::setId (const int id){ theId = id; }
 void User::setName (const std::string &name){ theName = name; }

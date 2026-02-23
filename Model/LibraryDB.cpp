@@ -11,7 +11,8 @@ LibraryDB::LibraryDB() {
 }
 void LibraryDB::init() {
     retrieveBooks();
-    // TODO: Call retrieve users and loans
+    retrieveUsers();
+    // TODO: Call retrieve loans
 }
 
 std::string LibraryDB::getInfo() const {
@@ -61,6 +62,25 @@ void LibraryDB::setBookAsBorrowedAvailable(const int id) {
     }
 }
 
+void LibraryDB::addUser(User &user) {
+    user.setId(nextUserId);
+    users[nextUserId++] = user;
+}
+std::vector<const User *> LibraryDB::getUsers() const {
+    std::vector<const User*> usersV;
+    usersV.reserve(users.size());
+    for (const auto &user : users) {
+        usersV.push_back(&user.second);
+    }
+    return usersV;
+}
+void LibraryDB::deleteUserById(const int id) {
+    users.erase(id);
+    if (id == nextUserId-1) {
+        nextUserId --;
+    }
+}
+
 void LibraryDB::retrieveBooks() {
     std::ifstream booksFile("../Data/books.csv");
     std::string booksLine;
@@ -91,16 +111,49 @@ void LibraryDB::retrieveBooks() {
     nextBookId = maxId + 1;
     booksFile.close();
 }
+void LibraryDB::retrieveUsers() {
+    std::ifstream usersFile("../Data/users.csv");
+    std::string usersLine;
+
+    int maxId {1};
+    while (std::getline(usersFile, usersLine)) {
+        std::stringstream ss (usersLine);
+
+        std::string idString;
+        getline(ss, idString, ',');
+        int id = std::stoi(idString);
+
+        std::string userName;
+        getline(ss, userName, ',');
+
+        std::string userEmail;
+        getline(ss, userEmail, '\n');
+
+        User u {id, userName, userEmail};
+        users[id] = u;
+
+        if (id > maxId) maxId = id;
+    }
+    nextUserId = maxId + 1;
+    usersFile.close();
+}
 
 void LibraryDB::saveAll() const {
     //TODO: save users and loans
     saveBooks();
+    saveUsers();
 }
-
 void LibraryDB::saveBooks() const {
     std::ofstream booksFile("../Data/books.csv");
     for (const auto &book : books) {
         booksFile << book.first << "," << book.second.getName() << "," << book.second.getAuthor() << "," << book.second.isAvailable() << std::endl;
     }
     booksFile.close();
+}
+void LibraryDB::saveUsers() const {
+    std::ofstream usersFile("../Data/users.csv");
+    for (const auto &user : users) {
+        usersFile << user.first << "," << user.second.getName() << "," << user.second.getEmail() << std::endl;
+    }
+    usersFile.close();
 }
