@@ -13,7 +13,7 @@ include_directories(. Model View Controller)
 add_executable(LibraryManagement
         main.cpp
         Controller/Controller.cpp
-        Model/Library.cpp
+        Model/LibraryDB.cpp
         Model/Book.cpp
         Model/User.cpp
         View/View.cpp

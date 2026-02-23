@@ -5,13 +5,13 @@
  * users and books.
  */
 #include "Controller/Controller.h"
-#include "Model/Library.h"
+#include "Model/LibraryDB.h"
 #include "View/View.h"
 
 int main() {
     // Create MVC architecture
-    const Library library{};
-    const View view{};
+    const LibraryDB library{};
+    constexpr View view{};
     Controller controller(library, view);
 
     // Init program

@@ -5,7 +5,7 @@
 #include "Controller.h"
 #include <utility>
 
-Controller::Controller(Library library, View view) :theLibrary(std::move(library)), theView(std::move(view)){}
+Controller::Controller(LibraryDB library, View view) :theLibrary(std::move(library)), theView(std::move(view)){}
 
 void Controller::init(){ MainMenu(); }
 

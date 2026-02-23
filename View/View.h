@@ -20,5 +20,4 @@ public:
     void clear();
 };
 
-
 #endif //LIBRARY_VIEW_H

@@ -5,16 +5,16 @@
 #ifndef LIBRARY_CONTROLLER_H
 #define LIBRARY_CONTROLLER_H
 
-#include "../Model/Library.h"
+#include "../Model/LibraryDB.h"
 #include "../View/View.h"
 
 class Controller {
 private:
-    Library theLibrary;
+    LibraryDB theLibrary;
 	View theView;
 
 public:
-    Controller(Library library, View view);
+    Controller(LibraryDB library, View view);
 
     void init();
     void MainMenu();
