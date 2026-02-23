@@ -21,21 +21,24 @@ private:
     std::unordered_map<int, Book> books;
     std::unordered_map<int, Loan> loans;
 
+    int nextUserId{1};
+    int nextBookId{1};
+    int nextLoanId{1};
+
 public:
     LibraryDB();
     void init();
 
     // Logic's methods
 
-    std::string getInfo();
+    std::string getInfo() const;
     // Book management
-    void addBook(const Book &b);
-    std::vector<Book*> getBooks();
-    Book* searchBookByName(const std::string &name);
-    Book* searchBookById(int id);
+    void addBook(Book &b);
+    std::vector<const Book*> getBooks() const;
+    Book searchBookByName(const std::string &bookName);
+    std::vector<const Book*> searchBookByAuthor(const std::string &bookAuthor) const;
     void deleteBookById(int id);
-    void setBookAsBorrowed(int id);
-    void setBookAsAvailable(int id);
+    void setBookAsBorrowedAvailable(int id);
     // User management
     void addUser(const User &user);
     std::vector<User*> getUsers();
@@ -46,14 +49,15 @@ public:
     void returnBook();
 
     // Methods to retrieve the information from the files
-    void retrieveUsers();
     void retrieveBooks();
+    void retrieveUsers();
     void retrieveLoans();
 
     // Methods to save the information to the files
-    void saveUsers();
-    void saveBooks();
-    void saveLoans();
+    void saveAll() const;
+    void saveBooks() const;
+    void saveUsers() const;
+    void saveLoans()const;
 };
 
 #endif //LIBRARY_LIBRARY_H

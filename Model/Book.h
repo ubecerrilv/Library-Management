@@ -15,12 +15,16 @@ private:
     bool theAvailable;
 
 public:
-    Book(int id, std::string name, std::string author);
+    Book();
+    Book(int id, std::string  name, std::string author);
+    Book(int id, std::string name, std::string author, bool available);
+    Book(std::string name, std::string author);
 
     void setId (int id);
     void setName (const std::string &name);
     void setAuthor (const std::string &author);
     void setAvailable (bool available);
+    void changeState();
 
     int getId() const;
     std::string getName() const;
