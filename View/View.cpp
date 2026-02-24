@@ -13,7 +13,6 @@ std::string View::getMessage() {
     return line;
 }
 int View::getOption() {
-    int option{-1};
     return std::stoi(getMessage());
 }
 void View::clear() {
@@ -49,7 +48,7 @@ void View::showUsersMenu() {
 void View::showBooksLoanMenu() {
     std::cout << "Please select one of the following:" << std::endl;
     std::cout << "1. Allow user to borrow a book" << std::endl;
-    std::cout << "2. Register loan date" << std::endl;
+    std::cout << "2. Show all loans" << std::endl;
     std::cout << "3. Return a book" << std::endl;
     std::cout << "4. Back" << std::endl;
 }
@@ -157,4 +156,17 @@ int View::getUserId() {
     std::string id{};
     std::getline(std::cin, id);
     return std::stoi(id);
+}
+
+void View::showLoans(const std::vector<const Loan*> &loans) {
+    if (loans.empty()) {
+        std::cout << "No loans found" << std::endl;
+        return;
+    }
+
+    std::cout << std::left << "User | Book | Loan date | Return date" <<std::endl;
+    std::cout << std::left << "-------------------------------------" <<std::endl;
+    for (const auto& loan : loans) {
+        std::cout << std::left << loan->getUserId() << " | " << loan->getBookId() << " | " << loan->getLoanDate() << " | " << loan->getReturnDate() << std::endl;
+    }
 }

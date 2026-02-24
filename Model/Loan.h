@@ -15,13 +15,16 @@ private:
     std::string theReturnDate;
 
 public:
+    Loan();
     Loan(int id, int userId, int bookId);
+    Loan(int id, int userId, int bookId, std::string loanDate, std::string returnDate);
 
     void setId(int id);
     void setUserId(int userId);
     void setBookId(int bookId);
     void setLoanDate(const std::string &date);
     void setReturnDate(const std::string &date);
+    void returnBook();
 
     int getId() const;
     int getUserId() const;

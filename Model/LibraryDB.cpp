@@ -12,7 +12,7 @@ LibraryDB::LibraryDB() {
 void LibraryDB::init() {
     retrieveBooks();
     retrieveUsers();
-    // TODO: Call retrieve loans
+    retrieveLoans();
 }
 
 std::string LibraryDB::getInfo() const {
@@ -81,6 +81,38 @@ void LibraryDB::deleteUserById(const int id) {
     }
 }
 
+bool LibraryDB::addLoan(const int userId, const int bookId) {
+    if (!users.count(userId) || !books.count(bookId)) {
+        return false;
+    }
+    loans[nextLoanId++] = {nextLoanId, userId, bookId};
+    books[bookId].setAvailable(false);
+    return true;
+}
+bool LibraryDB::returnBook(const int bookId) {
+    if (!books.count(bookId)) {
+        return false;
+    }
+
+    for (auto& loan :loans) {
+        if (bookId == loan.second.getBookId()) {
+            // Set return date to today
+            loan.second.returnBook();
+            books[bookId].setAvailable(true);
+            return true;
+        }
+    }
+    return false;
+}
+std::vector<const Loan*> LibraryDB::getLoans() const {
+    std::vector<const Loan*> loansV;
+    loansV.reserve(loans.size());
+    for (const auto& loan : loans) {
+        loansV.push_back(&loan.second);
+    }
+    return loansV;
+}
+
 void LibraryDB::retrieveBooks() {
     std::ifstream booksFile("../Data/books.csv");
     std::string booksLine;
@@ -108,7 +140,7 @@ void LibraryDB::retrieveBooks() {
 
         if (id > maxId) maxId = id;
     }
-    nextBookId = maxId + 1;
+    nextBookId = maxId != 1? maxId + 1: 1;
     booksFile.close();
 }
 void LibraryDB::retrieveUsers() {
@@ -134,8 +166,42 @@ void LibraryDB::retrieveUsers() {
 
         if (id > maxId) maxId = id;
     }
-    nextUserId = maxId + 1;
+    nextUserId = maxId != 1? maxId + 1: 1;
     usersFile.close();
+}
+void LibraryDB::retrieveLoans() {
+    std::ifstream loansFile("../Data/loans.csv");
+    std::string loansLine;
+    int maxId {1};
+
+    while (getline(loansFile, loansLine)) {
+        std::stringstream ss (loansLine);
+
+        std::string idString;
+        getline(ss, idString, ',');
+        int id = std::stoi(idString);
+
+        std::string userIdString;
+        getline(ss, userIdString, ',');
+        int userId = std::stoi(userIdString);
+
+        std::string bookIdString;
+        getline(ss, bookIdString, ',');
+        int bookId = std::stoi(bookIdString);
+
+        std::string loanDate;
+        getline(ss, loanDate, ',');
+
+        std::string returnDate;
+        getline(ss, returnDate, '\n');
+
+        Loan l {id, userId, bookId, loanDate, returnDate};
+        loans[id] = l;
+
+        if (id > maxId) maxId = id;
+    }
+    nextLoanId = maxId != 1? maxId + 1: 1;
+    loansFile.close();
 }
 
 void LibraryDB::saveAll() const {
@@ -156,4 +222,11 @@ void LibraryDB::saveUsers() const {
         usersFile << user.first << "," << user.second.getName() << "," << user.second.getEmail() << std::endl;
     }
     usersFile.close();
+}
+void LibraryDB::saveLoans() const {
+    std::ofstream loansFile("../Data/loans.csv");
+    for (const auto &loan : loans) {
+        loansFile << loan.first << "," << loan.second.getUserId() << "," << loan.second.getBookId() << "," <<   loan.second.getLoanDate() << "," << loan.second.getReturnDate() << std::endl;
+    }
+    loansFile.close();
 }

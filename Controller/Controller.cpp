@@ -41,12 +41,12 @@ void Controller::booksMenu() {
 		theView.showBooksMenu();
 		o = theView.getOption();
 
-		// TODO:  Show confirmation messages
 		switch (o) {
 			case 1: {
 				Book b = theView.getBook();
 				theLibrary.addBook(b);
 				theLibrary.saveBooks();
+				theView.showMessage("Book added");
 				break;
 			}
 			case 2: {
@@ -69,6 +69,7 @@ void Controller::booksMenu() {
 				const int id = theView.getBookId();
 				theLibrary.deleteBookById(id);
 				theLibrary.saveBooks();
+				theView.showMessage("Book deleted");
 				break;
 			}
 			case 6: {
@@ -86,7 +87,6 @@ void Controller::booksMenu() {
 void Controller::usersMenu() {
 	int o{0};
 
-	// TODO: Show confirmation messages
 	while (o != 4) {
 		theView.showUsersMenu();
 		o = theView.getOption();
@@ -96,6 +96,7 @@ void Controller::usersMenu() {
 				User u = theView.getUser();
 				theLibrary.addUser(u);
 				theLibrary.saveUsers();
+				theView.showMessage("User added");
 				break;
 			}
 			case 2: {
@@ -106,6 +107,7 @@ void Controller::usersMenu() {
 				const int id = theView.getUserId();
 				theLibrary.deleteUserById(id);
 				theLibrary.saveUsers();
+				theView.showMessage("User deleted");
 				break;
 			}
 			default: {
@@ -125,12 +127,31 @@ void Controller::booksLoanMenu() {
 
 		switch (o) {
 			case 1: {
+				const int userId = theView.getUserId();
+				const int bookId = theView.getBookId();
+
+				if (theLibrary.addLoan(userId, bookId)) {
+					theLibrary.saveLoans();
+					theView.showMessage("Loan registered");
+				}else {
+					theView.showMessage("Something went wrong, please verify the data");
+				}
 				break;
 			}
 			case 2: {
+				theView.showLoans(theLibrary.getLoans());
 				break;
 			}
 			case 3: {
+				const int bookId = theView.getBookId();
+
+				if (theLibrary.returnBook(bookId)) {
+					theLibrary.saveLoans();
+					theLibrary.saveBooks();
+					theView.showMessage("Book returned");
+				}else {
+					theView.showMessage("Probably the book is not borrowed or already returned");
+				}
 				break;
 			}
 			default: {

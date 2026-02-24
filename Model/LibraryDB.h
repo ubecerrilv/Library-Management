@@ -44,9 +44,9 @@ public:
     std::vector<const User*> getUsers()const;
     void deleteUserById(int id);
     //Loan management
-    void createLoan(int userId, int bookId);
-    // TODO: What parameters this should have
-    void returnBook();
+    bool addLoan(int userId, int bookId);
+    bool returnBook(int bookId);
+    std::vector<const Loan*> getLoans() const;
 
     // Methods to retrieve the information from the files
     void retrieveBooks();

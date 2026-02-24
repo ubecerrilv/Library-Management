@@ -11,6 +11,7 @@
 #include <iomanip>
 
 #include "Book.h"
+#include "Loan.h"
 #include "User.h"
 
 class View {
@@ -35,6 +36,8 @@ public:
     User getUser();
     void showUsers(const std::vector<const User*>& users);
     int getUserId();
+
+    void showLoans(const std::vector<const Loan*> &loans);
 };
 
 #endif //LIBRARY_VIEW_H

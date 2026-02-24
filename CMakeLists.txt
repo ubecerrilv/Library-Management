@@ -16,5 +16,6 @@ add_executable(LibraryManagement
         Model/LibraryDB.cpp
         Model/Book.cpp
         Model/User.cpp
+        Model/Loan.cpp
         View/View.cpp
 )
